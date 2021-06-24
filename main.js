@@ -9,3 +9,25 @@ Webcam.set({
 });
 var camera= document.getElementById("camera");
 Webcam.attach('#camera');
+function take_snap(){
+    Webcam.snap(function (data_uri){
+        document.getElementById("result").innerHTML="<img id='captured_img' src='"+data_uri+"'>";
+    })
+}
+classifier=ml5.imageClassifier('MobileNet',modelLoaded);
+function modelLoaded(){
+    console.log("model is loaded");
+}
+function check(){
+    img = document.getElementById("captured_img");
+classifier.classify(img, gotResult);
+}
+function gotResult(error,results){
+if(error){
+    console.error(error);
+}
+else{
+    console.log(results);
+    document.getElementById("object_name").innerHTML=results[0].label;
+}
+}
